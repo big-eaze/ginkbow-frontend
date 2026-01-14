@@ -141,38 +141,55 @@ function PaymentSummary({ cart, setCart, setOrders }) {
   return (
     <>
       {paymentSumm ? (
-        <div className="p-6 flex flex-col gap-4 w-full sm:w-80">
+        <div className="relative w-full sm:w-96 rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-100">
           {/* Header */}
-          <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-            Cart Summary
-          </h3>
-
-          {/* Subtotal */}
-          <div className="flex justify-between text-gray-700">
-            <span className="font-medium">Subtotal</span>
-            <span className="font-semibold text-gray-900">
-              ₦{(paymentSumm.subTotal ?? 0).toLocaleString()}
-            </span>
+          <div className="mb-5">
+            <h3 className="text-base font-semibold text-gray-900">
+              Order Summary
+            </h3>
+            <p className="text-xs text-gray-500">
+              Review your order before checkout
+            </p>
           </div>
 
-          {/* Delivery Fee */}
-          <div className="flex justify-between text-gray-700">
-            <span className="font-medium">Delivery Fee</span>
-            <span className="font-semibold text-gray-900">
-              ₦{(paymentSumm.totalDeliveryFee ?? 0).toLocaleString()}
-            </span>
+          {/* Breakdown */}
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span className="font-medium text-gray-900">
+                ₦{(paymentSumm.subTotal ?? 0).toLocaleString()}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-gray-600">
+              <span>Delivery</span>
+              <span className="font-medium text-gray-900">
+                ₦{(paymentSumm.totalDeliveryFee ?? 0).toLocaleString()}
+              </span>
+            </div>
           </div>
+
+          {/* Divider */}
+          <div className="my-4 h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
           {/* Total */}
-          <div className="flex justify-between text-gray-900 text-lg font-bold border-t border-gray-200 pt-2">
-            <span>Order Total</span>
-            <span>₦{(paymentSumm.totalCost ?? 0).toLocaleString()}</span>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-gray-500">Total payable</p>
+              <p className="text-xl font-bold text-gray-900">
+                ₦{(paymentSumm.totalCost ?? 0).toLocaleString()}
+              </p>
+            </div>
+
+            <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
+              Secure checkout
+            </span>
           </div>
 
-          {/* Place Order Button */}
-          <Link to="/order" className="mt-4 w-full">
+          {/* CTA */}
+          <Link to="/order" className="mt-6 block">
             <button
-              className="w-full py-3 rounded-lg bg-gray-900 text-white font-semibold text-sm hover:bg-gray-800 transition-shadow shadow-md hover:shadow-xl"
+              className="group relative w-full overflow-hidden rounded-xl bg-gray-900 py-4 text-sm font-semibold text-white transition hover:bg-gray-800"
               onClick={(e) => {
                 if (!cart.cartItems || cart.cartItems.length === 0) {
                   e.preventDefault();
@@ -182,14 +199,29 @@ function PaymentSummary({ cart, setCart, setOrders }) {
                 }
               }}
             >
-              Place Your Order (₦{(paymentSumm.totalCost ?? 0).toLocaleString()})
+              <span className="relative z-10">
+                Place Order — ₦{(paymentSumm.totalCost ?? 0).toLocaleString()}
+              </span>
+
+              {/* Hover sheen */}
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </button>
           </Link>
+
+          {/* Trust line */}
+          <p className="mt-4 text-center text-[11px] text-gray-400">
+            Taxes & delivery calculated at checkout • SSL secured
+          </p>
         </div>
       ) : (
-        <p className="text-gray-500">Loading payment summary...</p>
+        <div className="flex items-center justify-center py-10">
+          <p className="text-sm text-gray-500 animate-pulse">
+            Calculating order summary…
+          </p>
+        </div>
       )}
     </>
+
   );
 }
 
