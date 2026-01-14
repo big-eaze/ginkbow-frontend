@@ -39,63 +39,91 @@ function Order({ orders, setCart, setPaymentSumm, setTracking, setShowPopup, set
   return (
     <Fragment>
       {orders?.map((order) => (
-        <div key={order.id} className="bg-white rounded-3xl shadow-lg p-6 mb-8">
+        <div
+          key={order.id}
+          className="relative mb-10 rounded-3xl bg-white p-6 shadow-lg ring-1 ring-gray-100"
+        >
           {/* Order Header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 border-b border-gray-200 pb-3">
-            <p className="text-sm text-gray-500">
-              Order Placed: {dayjs(order.order_time_ms).format("MMMM D, YYYY")}
-            </p>
-            <p className="text-sm font-medium text-gray-900 mt-2 sm:mt-0">
-              Order ID: <span className="text-indigo-600">{order.id}</span>
-            </p>
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-gray-400">
+                Order placed
+              </p>
+              <p className="text-sm font-medium text-gray-900">
+                {dayjs(order.order_time_ms).format("MMMM D, YYYY")}
+              </p>
+            </div>
+
+            <div className="text-sm">
+              <span className="text-gray-500">Order ID</span>
+              <p className="font-semibold text-indigo-600">{order.id}</p>
+            </div>
           </div>
 
-          {/* Products */}
-          <div className="flex flex-col divide-y divide-gray-200">
-            {order.orderproducts?.map((op) => (
-              <div
-                key={op.product.id}
-                className="flex flex-col sm:flex-row sm:items-center py-4 gap-4"
-              >
-                {/* Product Image */}
-                <div className="flex-shrink-0 w-full sm:w-32 h-32 rounded-2xl overflow-hidden bg-gray-100 shadow-sm">
-                  <img
-                    src={op.product.image}
-                    alt={op.product.name}
-                    className="w-full h-full object-cover"
-                  />
+          {/* Products Timeline */}
+          <div className="relative space-y-8">
+            {order.orderproducts?.map((op, index) => (
+              <div key={op.product.id} className="relative flex gap-5">
+                {/* Timeline Rail */}
+                <div className="flex flex-col items-center">
+                  <span className="h-3 w-3 rounded-full bg-indigo-500" />
+                  {index !== order.orderproducts.length - 1 && (
+                    <span className="mt-1 h-full w-px bg-gray-200" />
+                  )}
                 </div>
 
-                {/* Product Info */}
-                <div className="flex-1 flex flex-col justify-between gap-2">
-                  <p className="text-xs text-gray-500">
-                    Arriving on: {dayjs(op.estimated_delivery_time_ms).format("MMMM D")}
-                  </p>
-                  <p className="text-sm font-semibold text-gray-900">{op.product.name}</p>
-                  <p className="text-sm text-gray-600">Quantity: {op.quantity}</p>
+                {/* Product Card */}
+                <div className="flex flex-1 gap-4 rounded-2xl bg-gray-50 p-4">
+                  {/* Image */}
+                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-gray-100">
+                    <img
+                      src={op.product.image}
+                      alt={op.product.name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <button
-                      onClick={() => {
-                        if (timeoutId.current) clearTimeout(timeoutId.current);
-                        addToCart(op.product.id);
-                        setShowPopup(true);
-                        timeoutId.current = setTimeout(() => setShowPopup(false), 3000);
-                      }}
-                      className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full shadow hover:bg-gray-800 transition"
-                    >
-                      Buy it again
-                    </button>
+                  {/* Info */}
+                  <div className="flex flex-1 flex-col justify-between">
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        Estimated delivery ·{" "}
+                        {dayjs(op.estimated_delivery_time_ms).format("MMM D")}
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-gray-900">
+                        {op.product.name}
+                      </p>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Quantity · {op.quantity}
+                      </p>
+                    </div>
 
-                    <Link to={`/tracking`}>
+                    {/* Actions */}
+                    <div className="mt-3 flex flex-wrap gap-3">
                       <button
-                        onClick={() => trackPackage(order.id)}
-                        className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-full hover:bg-indigo-50 transition"
+                        onClick={() => {
+                          if (timeoutId.current) clearTimeout(timeoutId.current);
+                          addToCart(op.product.id);
+                          setShowPopup(true);
+                          timeoutId.current = setTimeout(
+                            () => setShowPopup(false),
+                            3000
+                          );
+                        }}
+                        className="rounded-full bg-gray-900 px-4 py-2 text-xs font-medium text-white transition hover:bg-gray-800"
                       >
-                        Track Package
+                        Buy again
                       </button>
-                    </Link>
+
+                      <Link to="/tracking">
+                        <button
+                          onClick={() => trackPackage(order.id)}
+                          className="rounded-full border border-gray-300 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 transition"
+                        >
+                          Track package
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -104,6 +132,7 @@ function Order({ orders, setCart, setPaymentSumm, setTracking, setShowPopup, set
         </div>
       ))}
     </Fragment>
+
   );
 }
 
