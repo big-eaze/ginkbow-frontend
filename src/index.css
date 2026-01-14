@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+@layer utilities {
+  .font-roboto {
+    font-family: Roboto, sans-serif;
+  }
+
+  .font-poppins {
+    font-family: Poppins, sans-serif;
+  }
+
+  .font-dancing {
+    font-family: 'Dancing Script', cursive;
+  }
+}
+
+html {
+  @apply font-roboto;
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.marquee__inner {
+  display: flex;
+  width: 200%;
+  animation: marquee 50s linear infinite;
+}
+
+.marquee__group {
+  display: flex;
+  width: 50%;
+}
+
+.marquee__group span {
+  flex-shrink: 0;
+  padding-right: 1.5rem;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
