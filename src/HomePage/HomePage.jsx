@@ -69,7 +69,7 @@ function HomePage() {
             <HomeSecTwo />
 
             {/* Product Sections */}
-            <div className="js-shopping-container space-y-12">
+            <div className="js-shopping-container space-y-5">
               <HomeProduct
                 type="Kitchen-Appliances"
                 products={products}

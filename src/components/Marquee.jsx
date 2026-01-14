@@ -2,7 +2,7 @@ import React from "react";
 
 function Marquee() {
   return (
-    <div className="relative w-full overflow-hidden bg-gray-900 py-3">
+    <div className="z-20 fixed w-full hidden lg:block overflow-hidden bg-gray-900 py-3">
       <div className="marquee">
         <div className="marquee__inner">
 

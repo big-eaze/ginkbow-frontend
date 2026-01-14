@@ -50,81 +50,85 @@ function HomeProduct({ type, products, route, setCart, setPaymentSumm, setShowPo
 function ProductCard({ product, addToCart, setShowPopup, mobile }) {
   return (
 
-    <div
-      className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 ${mobile ? "w-56 sm:w-60" : "w-full"
-        }`}
-    >
+   <div
+  className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex flex-col flex-shrink-0 
+    ${mobile ? "w-44 sm:w-56" : "w-full"}
+  `}
+>
+  {/* Image Container */}
+  <div className="w-[92%] mt-2 mx-auto h-36 sm:h-44 relative overflow-hidden rounded-t-xl bg-gray-100 group">
+    <img
+      src={product.image}
+      alt={product.name}
+      className="w-full h-full object-cover"
+    />
 
-      {/* Image Container */}
-      <div className="w-[92%] mt-2 mx-auto h-48 relative overflow-hidden rounded-t-2xl bg-gray-100 group">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
+    {/* Gradient Overlay */}
+    <div className="absolute inset-0 rounded-t-xl bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
 
-        {/* Gradient Overlay for Depth */}
-        <div className="absolute inset-0 rounded-t-2xl bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+    {/* Wishlist Icon */}
+    <div className="absolute top-2 right-2 bg-white/20 p-1 rounded-full backdrop-blur-sm hover:bg-white/30 transition">
+      <img
+        src="images/kitchen-Accessories/wishlist.svg"
+        alt="wishlist"
+        className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform"
+      />
+    </div>
+  </div>
 
-        {/* Wishlist Icon */}
-        <div className="absolute top-3 right-3 bg-white/20 p-1 rounded-full backdrop-blur-sm hover:bg-white/30 transition">
-          <img
-            src="images/kitchen-Accessories/wishlist.svg"
-            alt="wishlist"
-            className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform"
-          />
-        </div>
-      </div>
+  {/* Product Info */}
+  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+    {/* Product Name */}
+    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 mb-1 line-clamp-2">
+      {product.name}
+    </p>
 
-      {/* Product Info */}
-      <div className="p-4 flex-1 flex flex-col justify-between">
-        {/* Product Name */}
-        <p className="text-sm md:text-base font-medium text-gray-900 mb-2 line-clamp-2">
-          {product.name}
-        </p>
+    {/* Price & Discount */}
+    <div className="flex relative flex-col gap-1 mb-2">
+      <span className="text-base sm:text-lg md:text-xl font-bold text-gray-900">
+        ₦{product.price.toLocaleString()}
+      </span>
 
-        {/* Price & Discount */}
-        <div className="flex relative flex-col md:gap-2 mb-3">
-          <span className="text-lg md:text-xl font-bold text-gray-900">
-            ₦{product.price.toLocaleString()}
-          </span>
-
-          {(product.initialPrice || product.discountPercent) && (
-            <div className="flex flex-col md:flex-row md:items-center md:gap-2 text-sm md:text-base text-gray-500 mt-1 md:mt-0">
-              {product.initialPrice && (
-                <span className="line-through">₦{product.initialPrice}</span>
-              )}
-              {product.discountPercent && (
-                <span className="absolute right-2 text-yellow-300 font-semibold">{product.discountPercent}</span>
-              )}
-            </div>
+      {(product.initialPrice || product.discountPercent) && (
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
+          {product.initialPrice && (
+            <span className="line-through">₦{product.initialPrice}</span>
+          )}
+          {product.discountPercent && (
+            <span className="ml-auto text-yellow-400 font-semibold">
+              {product.discountPercent}
+            </span>
           )}
         </div>
-
-        {/* Rating */}
-        <div className="flex items-center gap-2 mb-4">
-          <img
-            src={`images/ratings/rating-${product.rating.star || 0}.png`}
-            alt="rating"
-            className="w-20 h-4"
-          />
-          <p className="text-xs text-gray-500">({product.rating.rank})</p>
-        </div>
-
-        {/* Add to Cart Button */}
-        <button
-          className="mt-auto w-full py-2 rounded-lg border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium text-sm transition-all shadow-sm hover:shadow-md"
-          onClick={() => {
-            addToCart(product.id);
-            setShowPopup(true);
-            setTimeout(() => setShowPopup(false), 3000);
-          }}
-        >
-          Add to Cart
-        </button>
-
-      </div>
+      )}
     </div>
+
+    {/* Rating */}
+    <div className="flex items-center gap-1 mb-3">
+      <img
+        src={`images/ratings/rating-${product.rating.star || 0}.png`}
+        alt="rating"
+        className="w-16 h-3"
+      />
+      <p className="text-[11px] text-gray-500">
+        ({product.rating.rank})
+      </p>
+    </div>
+
+    {/* Add to Cart Button */}
+    <button
+      className="mt-auto w-full py-1.5 sm:py-2 rounded-lg border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium text-xs sm:text-sm transition-all shadow-sm hover:shadow-md"
+      onClick={() => {
+        addToCart(product.id);
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 3000);
+      }}
+    >
+      Add to Cart
+    </button>
+  </div>
+</div>
+
 
   );
 }

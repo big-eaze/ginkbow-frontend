@@ -41,12 +41,14 @@ html {
 .marquee__inner {
   display: flex;
   width: 200%;
+  flex-shrink: 0;
   animation: marquee 50s linear infinite;
 }
 
 .marquee__group {
   display: flex;
   width: 50%;
+  flex-wrap: nowrap;
 }
 
 .marquee__group span {
